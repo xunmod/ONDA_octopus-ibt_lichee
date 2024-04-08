@@ -54,60 +54,53 @@ size = 16384
     downloadfile = "boot.fex"
     user_type    = 0x8000
 
-;------------------------------>mmcblk0p7/nandd, 2G
+;------------------------------>mmcblk0p7/nandd, 512M
 [partition]
     name         = system
-    size         = 3145728
+    size         = 524288
     downloadfile = "system.fex"
     user_type    = 0x8000
 
 ;------------------------------>mmcblk0p8/nande
-;[partition]
-;    name         = data
-;    size         = 2097152
-;    user_type    = 0x8000
-;
-;------------------------------>mmcblk0p9/nandf
 [partition]
     name         = misc
     size         = 32768
     user_type    = 0x8000
 
-;------------------------------>mmcblk0p10/nandg
+;------------------------------>mmcblk0p9/nandf
 [partition]
     name         = recovery
     size         = 65536
     downloadfile = "recovery.fex"
     user_type    = 0x8000
 
-;------------------------------>mmcblk0p11/nandh
+;------------------------------>mmcblk0p10/nandg
 [partition]
     name         = cache
-    size         = 1572864
+    size         = 524288
     user_type    = 0x8000
 
-;------------------------------>nandi, store encryptable
+;------------------------------>nandh, store encryptable
 [partition]
     name         = metadata
     size         = 32768
     user_type    = 0x8000
 
-;------------------------------>nandj, data image private
+;------------------------------>nandi, data image private
 [partition]
     name         = private
     size         = 32768
     ro           = 0
     user_type    = 0x8000
 
-;------------------------------>nandk, save android and kernel panic log
+;------------------------------>nandj, save android and kernel panic log
 [partition]
     name         = alog
-    size         = 163840
+    size         = 131072
     ro           = 0
     user_type    = 0x8000
 
-;------------------------------>nandl, UDISK
+;------------------------------>nandk, UDISK
 [partition]
     name         = UDISK
     user_type    = 0x8100
-
