@@ -57,7 +57,7 @@ size = 16384
 ;------------------------------>mmcblk0p7/nandd, 512M
 [partition]
     name         = system
-    size         = 524288
+    size         = 655360
     downloadfile = "system.fex"
     user_type    = 0x8000
 
