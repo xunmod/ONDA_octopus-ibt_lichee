@@ -54,10 +54,10 @@ size = 16384
     downloadfile = "boot.fex"
     user_type    = 0x8000
 
-;------------------------------>mmcblk0p7/nandd, 512M
+;------------------------------>mmcblk0p7/nandd, 640M
 [partition]
     name         = system
-    size         = 655360
+    size         = 1310720
     downloadfile = "system.fex"
     user_type    = 0x8000
 
