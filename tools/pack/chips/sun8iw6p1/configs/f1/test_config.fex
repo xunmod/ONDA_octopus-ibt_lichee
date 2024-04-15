@@ -66,7 +66,7 @@ category    = 0
 run_type    = 1
 module_count= 1
 module_path = "/system/vendor/modules/8723bs.ko"
-module_args = ""
+module_args = 
 
 ;-------------------------------------------------------------------------------
 ; module_path
@@ -78,11 +78,41 @@ module_args = ""
 display_name= "重力感应器"
 activated   = 1
 program     = "gsensortester.sh"
-category    = 0f
+category    = 0
 run_type    = 1
 module_count= 1
-module1_path= "/lib/modules/3.4.39/bma250.ko"
+module1_path= "/system/vendor/modules/bma250.ko"
 device_name = "bma250"
+
+;-------------------------------------------------------------------------------
+; module_path
+;   The full path of gyro module file.
+; device_name
+;   The name of gyro device.
+;-------------------------------------------------------------------------------
+[gyro]
+display_name= "陀螺仪"
+activated   = 0
+program     = "gyrotester.sh"
+category    = 0
+run_type    = 1
+module_count= 0
+device_name =
+
+;-------------------------------------------------------------------------------
+; module_path
+;   The full path of e-compass module file.
+; device_name
+;   The name of e-compass device.
+;-------------------------------------------------------------------------------
+[compass]
+display_name= "指南针"
+activated   = 0
+program     = "compasstester.sh"
+category    = 0
+run_type    = 1
+module_count= 0
+device_name =
 
 ;-------------------------------------------------------------------------------
 ; test_size
@@ -118,7 +148,7 @@ device_node = "/dev/ttyS1"
 
 [mmc]
 display_name= "SD卡"
-activated   = 0
+activated   = 1
 program     = "mmctester.sh"
 category    = 1
 run_type    = 1
@@ -170,13 +200,13 @@ run_type    = 1
 ;-------------------------------------------------------------------------------
 [hdmi]
 display_name= "HDMI"
-activated   = 1
+activated   = 0
 program     = "hdmitester.sh"
 category    = 1
 run_type    = 1
 sound_file  = "/dragonboard/data/test48000.pcm"
 samplerate  = 48000
-support_mode= 2
+support_mode= 10
 module_count= 1
 module1_path= "/system/vendor/modules/hdmi.ko"
 ;-------------------------------------------------------------------------------
@@ -200,7 +230,7 @@ activated   = 0
 program     = "irtester"
 category    = 1
 run_type    = 1
-module_path = "/system/vendor/modules/sunxi-ir-rx.ko"
+module_path = ""
 
 ;-------------------------------------------------------------------------------
 ; delay
