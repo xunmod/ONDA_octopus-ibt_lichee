@@ -37,9 +37,10 @@ static struct sw_device_info ctps[] = {
         {   "gt82x", 0, {      0x5d},  0xf7d, {0x13,0x27,0x28          }, 0},
         { "gslX680", 0, {      0x40},   0x00, {0x00                    }, 1},
         {"gslX680new", 0, {    0x40},   0x00, {0x00                    }, 1},
-        {"gt9xx_ts", 0, {0x14, 0x5d}, 0x8140, {0x39                    }, 0},
+        // xunmod edit: force gt9xxf_ts
+        {"gt9xxf_ts", 0, {0x14, 0x5d}, 0x8140, {0x39                    }, 0},
 	{"gt9xxnew_ts", 0, {0x14, 0x5d}, 0x8140, {0x39,0x60,0xe0,0x10,                    }, 0},
-        {"gt9xxf_ts", 0, { 0x14,0x5d},   0x00, {0x00                    }, 1},
+        // {"gt9xxf_ts", 0, { 0x14,0x5d},   0x00, {0x00                    }, 1},
         {   "tu_ts", 0, {      0x5f},   0x00, {0x00                    }, 1},
         {"gt818_ts", 0, {      0x5d},  0x715, {0xc3                    }, 0},
         { "zet622x", 0, {      0x76},   0x00, {0x00                    }, 0},
