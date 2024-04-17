@@ -10,7 +10,7 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#define  MAX_PATH             (260)
+#define  MAX_PATH             (1024)
 
 
 int  script_length;
@@ -19,6 +19,7 @@ int  align_size;
 void *script_file_decode(char *script_name);
 int merge_uboot(char *source_uboot_name, char *script_name);
 
+int align_uboot(char *source_uboot_name);
 int update_for_uboot(char *uboot_name);
 //------------------------------------------------------------------------------------------------------------
 //
@@ -685,6 +686,7 @@ int merge_uboot(char *source_uboot_name, char *script_file_name)
 	{
 		total_length = (total_length + align_size) & (~(align_size - 1));
 	}
+       printf("u-boot+script total length = %d\n", total_length);
 
 	pbuf_source = (char *)malloc(total_length);
 	if(!pbuf_source)
@@ -753,14 +755,15 @@ int align_uboot(char *source_uboot_name)
 	rewind(uboot_file);
 
 	head = (struct spare_boot_ctrl_head *)buffer;
-	source_length = head->uboot_length;
+       total_length = source_length = head->uboot_length;
 	align_size = head->align_size;
 	if(source_length & (align_size - 1))
 	{
 		total_length = (source_length + align_size) & (~(align_size - 1));
 	}
-	//printf("source length = %d\n", source_length);
-	//printf("total length = %d\n", total_length);
+       printf("u-boot align size = %d\n", align_size);
+       printf("u-boot source length = %d\n", source_length);
+       printf("u-boot total length = %d\n", total_length);
 	uboot_buf = (char *)malloc(total_length);
 	if(!uboot_buf)
 	{
