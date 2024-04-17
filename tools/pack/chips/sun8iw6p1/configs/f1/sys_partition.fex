@@ -96,7 +96,7 @@ size = 16384
 ;------------------------------>nandj, save android and kernel panic log
 [partition]
     name         = alog
-    size         = 131072
+    size         = 262144
     ro           = 0
     user_type    = 0x8000
 
