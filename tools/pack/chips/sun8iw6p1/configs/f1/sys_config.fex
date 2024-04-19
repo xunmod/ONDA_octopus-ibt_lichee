@@ -30,6 +30,12 @@ next_work   = 3
 [target]
 boot_clock   	= 1008
 storage_type    = -1
+
+[secure]
+dram_region_mbytes       = 64
+drm_region_mbytes        = 0
+drm_region_start_mbytes  = 0
+
 [charging_type]
 charging_type = 1
 ;---------------------------------------------------------------------------------
@@ -419,17 +425,15 @@ rtp_exchange_x_y_flag = 0
 ctp_used            = 1
 ctp_twi_id          = 0
 ctp_twi_addr        = 0x5d
-;ctp_name            = "gslX680"
+ctp_name            = "gt978f"
 ctp_screen_max_x    = 1024
 ctp_screen_max_y    = 768
 ctp_revert_x_flag   = 0
 ctp_revert_y_flag   = 1
 ctp_exchange_x_y_flag = 0
 
-ctp_cob_gt9xxf       = 978
-
-ctp_int_port        = port:PL07<6><default><default><default>
-ctp_wakeup          = port:PL06<1><default><default><1>
+ctp_int_port        = port:PH07<6><default><default><default>
+ctp_wakeup          = port:PH06<1><default><default><1>
 ctp_power_ldo       = "vcc-ctp"
 ctp_power_ldo_vol   = 3000
 ctp_power_io        =
@@ -1781,39 +1785,48 @@ B_LV7_volt = 840
 B_LV8_freq = 0
 B_LV8_volt = 840
 
+;----------------------------------------------------------------------------------
+;sgx544 parameters
+;normal_vol       : the normal voltage of gpu
+;normal_freq      : the normal frequency of gpu
+;extreme_vol      : the maximum voltage of gpu
+;extreme_freq     : the maximum frequency of gpu
+;scene_ctrl_status: scene control status, if this is enabled, android layer can ask
+;                   gpu driver to change frequency in certain scene
+;temp_ctrl_status : temperature control status, if this is enabled, the gpu frequency
+;                   will drop down if gpu's temperature is too high
+;tft_count        : the temperature frequency data count to use
+;----------------------------------------------------------------------------------
+[gpu_sgx544_0]
+normal_vol        = 900
+normal_freq       = 624
+extreme_vol       = 1100
+extreme_freq      = 744
+scene_ctrl_status = 1
+temp_ctrl_status  = 1
+tft_count         = 2
 
+tf0_temp = 85
+tf0_freq = 504
 
-[gpu_dvfs_table]
-G_normal_level = 4
-G_dvfs_enable  = 1
-G_LV_count = 9
+tf1_temp = 95
+tf1_freq = 288
 
-G_LV0_freq = 252
-G_LV0_volt = 700
+[gpu_sgx544_1]
+normal_vol        = 900
+normal_freq       = 552
+extreme_vol       = 1100
+extreme_freq      = 720
+scene_ctrl_status = 1
+temp_ctrl_status  = 1
+tft_count         = 2
 
-G_LV1_freq = 288
-G_LV1_volt = 740
+tf0_temp = 85
+tf0_freq = 456
 
-G_LV2_freq = 456
-G_LV2_volt = 800
-
-G_LV3_freq = 504
-G_LV3_volt = 840
-
-G_LV4_freq = 624
-G_LV4_volt = 900
-
-G_LV5_freq = 648
-G_LV5_volt = 940
-
-G_LV6_freq = 672
-G_LV6_volt = 1000
-
-G_LV7_freq = 696
-G_LV7_volt = 1040
-
-G_LV8_freq = 744
-G_LV8_volt = 1100
+tf1_temp = 95
+tf1_freq = 288
+;----------------------------------------------------------------------------------
 
 ;----------------------------------------------------------------------------------
 ;virtual device
