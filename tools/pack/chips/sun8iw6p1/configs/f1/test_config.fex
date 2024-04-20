@@ -43,7 +43,7 @@ program     = "memtester.sh"
 category    = 0
 run_type    = 1
 dram_size   = 2048
-test_size   = 8 
+test_size   = 8
 
 [rtc]
 display_name= "时钟"
@@ -65,8 +65,8 @@ program     = "wifitester.sh"
 category    = 0
 run_type    = 1
 module_count= 1
-module_path = "/system/vendor/modules/bcmdhd.ko"
-module_args = "nvram_path=/system/vendor/modules/nvram_gb9663.txt"
+module_path = "/system/vendor/modules/8723bs-vq0.ko"
+module_args =
 
 ;-------------------------------------------------------------------------------
 ; module_path
@@ -75,46 +75,15 @@ module_args = "nvram_path=/system/vendor/modules/nvram_gb9663.txt"
 ;   The name of g-sensor device.
 ;-------------------------------------------------------------------------------
 [gsensor]
-display_name= "重力感应器"
+display_name= "加速度"
 activated   = 1
 program     = "gsensortester.sh"
 category    = 0f
 run_type    = 1
 module_count= 1
-module1_path= "/lib/modules/3.4.39/lsm9ds0_acc_mag.ko"
-device_name = "lsm9ds0_acc"
+module1_path= "/system/vendor/modules/bma250.ko"
+device_name = "bma250"
 
-;-------------------------------------------------------------------------------
-; module_path
-;   The full path of gyro module file.
-; device_name
-;   The name of gyro device.
-;-------------------------------------------------------------------------------
-[gyro]
-display_name= "陀螺仪"
-activated   = 1
-program     = "gyrotester.sh"
-category    = 0
-run_type    = 1
-module_count= 1
-module1_path= "/lib/modules/3.4.39/lsm9ds0_gyr.ko"
-device_name = "lsm9ds0_gyr"
-
-;-------------------------------------------------------------------------------
-; module_path
-;   The full path of e-compass module file.
-; device_name
-;   The name of e-compass device.
-;-------------------------------------------------------------------------------
-[compass]
-display_name= "指南针"
-activated   = 1
-program     = "compasstester.sh"
-category    = 0
-run_type    = 1
-module_count= 1
-module1_path= 
-device_name = "lsm9ds0_mag"
 
 ;-------------------------------------------------------------------------------
 ; test_size
@@ -145,8 +114,11 @@ test_time   = 3
 category    = 0
 dst_bt      = ":"
 run_type    = 1
-module_path = "/system/vendor/modules/bcm40183b2.hcd"
+module_path =
 device_node = "/dev/ttyS1"
+baud_rate   =
+bt_vnd      = "realtek"
+rtk_bt_chip = "rtl8723b_VQ0"
 
 [mmc]
 display_name= "SD卡"
@@ -178,9 +150,9 @@ run_type    = 1
 
 [Usb_OTG]
 display_name= "USB_OTG"
-activated   = 0
+activated   = 1
 program     = "otgtester.sh"
-category    = 1
+category    = 0
 run_type    = 1
 ;-------------------------------------------------------------------------------
 ; sound_file
@@ -188,10 +160,10 @@ run_type    = 1
 ; samplerate
 ;   The samplerate of sound file.
 ; support_mode
-;   0 : 480I    
-;   1 : 576I    
-;   2 : 480P    
-;   3 : 576P    
+;   0 : 480I
+;   1 : 576I
+;   2 : 480P
+;   3 : 576P
 ;   4 : 720P 50HZ
 ;   5 : 720P 60HZ
 ;   6 : 1080I 50HZ
@@ -202,7 +174,7 @@ run_type    = 1
 ;-------------------------------------------------------------------------------
 [hdmi]
 display_name= "HDMI"
-activated   = 0
+activated   = 1
 program     = "hdmitester.sh"
 category    = 1
 run_type    = 1
@@ -210,7 +182,7 @@ sound_file  = "/dragonboard/data/test48000.pcm"
 samplerate  = 48000
 support_mode= 2
 module_count= 1
-module1_path= "/system/vendor/modules/hdcp.ko"
+module1_path= "/system/vendor/modules/hdmi.ko"
 ;-------------------------------------------------------------------------------
 ; module_path
 ;   The full path of key module file.
@@ -221,18 +193,7 @@ activated   = 1
 program     = "keytester"
 category    = 1
 run_type    = 1
-
-;-------------------------------------------------------------------------------
-; module_path
-;   The full path of ir module file.
-;-------------------------------------------------------------------------------
-[ir]
-display_name= "红外"
-activated   = 0
-program     = "irtester"
-category    = 1
-run_type    = 1
-module_path = "/system/vendor/modules/sunxi-ir-rx.ko"
+module_path = "/system/vendor/modules/sunxi-keyboard.ko"
 
 ;-------------------------------------------------------------------------------
 ; delay
@@ -267,9 +228,10 @@ samplerate  = 48000
 mic1_used   = 1
 mic2_used   = 0
 mic1_gain   = 1
-mic2_gain   = 1 
+mic2_gain   = 1
 mic1_threshold =16383
 mic2_threshold =16383
+
 ;-------------------------------------------------------------------------------
 ; type
 ;   0: rtp
@@ -280,8 +242,8 @@ mic2_threshold =16383
 [tp]
 display_name= "触摸"
 type        = 1
-module_path = "/system/vendor/modules/gt9xxnew_ts.ko"
-device_name = "gt9xxnew_ts"
+module_path = "/system/vendor/modules/gt9xxf_ts.ko"
+device_name   = "gt9xxf_ts"
 
 ;-------------------------------------------------------------------------------
 ; module_count
@@ -291,15 +253,14 @@ device_name = "gt9xxnew_ts"
 ;-------------------------------------------------------------------------------
 [camera]
 activated   = 1
-module_count= 8
-module1_path= "/system/vendor/modules/videobuf-core.ko"
-module2_path= "/system/vendor/modules/videobuf-dma-contig.ko"
-module3_path= "/system/vendor/modules/cci.ko"
-module4_path= "/system/vendor/modules/vfe_os.ko"
-module5_path= "/system/vendor/modules/vfe_subdev.ko"
-module6_path= "/system/vendor/modules/hi253.ko"
-module7_path= "/system/vendor/modules/ov8858_4lane.ko"
-module8_path= "/system/vendor/modules/vfe_v4l2.ko"
+module_count= 7
+module1_path= "/system/vendor/modules/videobuf2-core.ko"
+module2_path= "/system/vendor/modules/videobuf2-memops.ko"
+module3_path= "/system/vendor/modules/videobuf2-dma-contig.ko"
+module4_path= "/system/vendor/modules/vfe_io.ko"
+module5_path= "/system/vendor/modules/gc0312.ko"
+module6_path= "/system/vendor/modules/gc2145.ko"
+module7_path= "/system/vendor/modules/vfe_v4l2.ko"
 dev_cnt     = 2
 csi_cnt     = 1
 fps         = 15
@@ -352,14 +313,14 @@ manual_menu_name    = "手动测试项"
 auto_menu_name      = "自动测试项"
 clear_button_name   = "清屏"
 wifi_menu_name      = "wifi热点列表"
-font_size           = 20
+font_size           = 48
 menu_bgcolor        = 1
 menu_fgcolor        = 7
 
 item_init_bgcolor   = 7
 item_init_fgcolor   = 0
 item_ok_bgcolor     = 7
-item_ok_fgcolor     = 6
+item_ok_fgcolor     = 2
 item_fail_bgcolor   = 7
 item_fail_fgcolor   = 5
 tp_draw_color       = 0
