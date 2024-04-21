@@ -450,8 +450,8 @@ gt82x                     = 0
 gslX680                   = 0
 gslX680new                = 1
 gt9xx_ts                  = 0
-gt9xxf_ts                 = 1
-gt9xxnew_ts		  = 0
+gt9xxf_ts                 = 0
+gt9xxnew_ts		  = 1
 
 gt811                     = 0
 zet622x                   = 0
