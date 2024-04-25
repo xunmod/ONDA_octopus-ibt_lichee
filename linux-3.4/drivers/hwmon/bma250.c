@@ -29,6 +29,7 @@
 //#include <mach/system.h>
 #include <mach/hardware.h>
 
+#if 0
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
 #endif
@@ -36,7 +37,7 @@
 #if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_PM)
 #include <linux/pm.h>
 #endif
-
+#endif
 
 enum {
 	DEBUG_INIT = 1U << 0,
@@ -70,6 +71,7 @@ module_param_named(debug_mask, debug_mask, int, 0644);
 #define BMA250E_CHIP_ID                         0xF9
 #define BMA250_RANGE_SET                        0
 #define BMA250_BW_SET                           4
+#define BMA223_CHIP_ID                          0xF8
 
 
 /*
@@ -177,6 +179,11 @@ module_param_named(debug_mask, debug_mask, int, 0644);
 #define BMA250_BANDWIDTH__MSK                   0x1F
 #define BMA250_BANDWIDTH__REG                   BMA250_BW_SEL_REG
 
+#define BMA250_EN_D_SUSPEND__POS                5
+#define BMA250_EN_D_SUSPEND__LEN                1
+#define BMA250_EN_D_SUSPEND__MSK                0x20
+#define BMA250_EN_D_SUSPEND__REG                BMA250_MODE_CTRL_REG
+
 #define BMA250_EN_LOW_POWER__POS                6
 #define BMA250_EN_LOW_POWER__LEN                1
 #define BMA250_EN_LOW_POWER__MSK                0x40
@@ -217,8 +224,7 @@ module_param_named(debug_mask, debug_mask, int, 0644);
 #define BMA250_MODE_NORMAL                      0
 #define BMA250_MODE_LOWPOWER                    1
 #define BMA250_MODE_SUSPEND                     2
-
-
+#define BMA250_MODE_D_SUSPEND                   3
 
 struct bma250acc{
 	s16	x,
@@ -238,6 +244,8 @@ struct bma250_data {
 	struct mutex mode_mutex;
 	struct delayed_work work;
 	struct work_struct irq_work;
+	
+#if 0
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	struct early_suspend early_suspend;
 #endif
@@ -245,18 +253,24 @@ struct bma250_data {
 	unsigned char range_state;
 	unsigned char bandwidth_state;
 #endif
+#endif
+
 };
 
 /* Addresses to scan */
 static const unsigned short normal_i2c[] = {0x18, I2C_CLIENT_END};
 static __u32 twi_id = 0;
 static int i2c_num = 0;
+unsigned char deep_suspend = 0;
 static const unsigned short i2c_address[3] = {0x18,0x19,0x38};
 
+#if 0
 #ifdef CONFIG_HAS_EARLYSUSPEND
 static void bma250_early_suspend(struct early_suspend *h);
 static void bma250_late_resume(struct early_suspend *h);
 #endif
+#endif
+
 
 static struct sensor_config_info gsensor_info = {
 	.input_type = GSENSOR_TYPE,
@@ -300,6 +314,14 @@ static int gsensor_detect(struct i2c_client *client, struct i2c_board_info *info
 				pr_info("Bosch Sensortec Device detected!\n" \
 					"BMA250E registered I2C driver!\n");  
 				strlcpy(info->type, SENSOR_NAME, I2C_NAME_SIZE);
+				deep_suspend = 1;
+				return 0; 
+			} else if((ret &0x00FF) == BMA223_CHIP_ID) {
+            	  	
+				pr_info("Bosch Sensortec Device detected!\n" \
+					"BMA223 registered I2C driver!\n");  
+				strlcpy(info->type, SENSOR_NAME, I2C_NAME_SIZE);
+				deep_suspend = 1;
 				return 0; 
 			}                                                                                                               
 		}
@@ -352,7 +374,7 @@ static int bma250_set_mode(struct i2c_client *client, unsigned char Mode)
 	if (client == NULL) {
 		comres = -1;
 	} else{
-		if (Mode < 3) {
+		if (Mode < 4) {
 			comres = bma250_smbus_read_byte(client,
 					BMA250_EN_LOW_POWER__REG, &data1);
 			switch (Mode) {
@@ -361,18 +383,35 @@ static int bma250_set_mode(struct i2c_client *client, unsigned char Mode)
 					BMA250_EN_LOW_POWER, 0);
 				data1  = BMA250_SET_BITSLICE(data1,
 					BMA250_EN_SUSPEND, 0);
+				if(deep_suspend)
+				    data1  = BMA250_SET_BITSLICE(data1,
+					    BMA250_EN_D_SUSPEND, 0);
 				break;
 			case BMA250_MODE_LOWPOWER:
 				data1  = BMA250_SET_BITSLICE(data1,
 					BMA250_EN_LOW_POWER, 1);
 				data1  = BMA250_SET_BITSLICE(data1,
 					BMA250_EN_SUSPEND, 0);
+				if(deep_suspend)
+					data1  = BMA250_SET_BITSLICE(data1,
+					    BMA250_EN_D_SUSPEND, 0);
 				break;
 			case BMA250_MODE_SUSPEND:
 				data1  = BMA250_SET_BITSLICE(data1,
 					BMA250_EN_LOW_POWER, 0);
 				data1  = BMA250_SET_BITSLICE(data1,
 					BMA250_EN_SUSPEND, 1);
+				if(deep_suspend)
+					data1  = BMA250_SET_BITSLICE(data1,
+						BMA250_EN_D_SUSPEND, 0);
+				break;
+			case BMA250_MODE_D_SUSPEND:
+				data1  = BMA250_SET_BITSLICE(data1,
+					BMA250_EN_LOW_POWER, 0);
+				data1  = BMA250_SET_BITSLICE(data1,
+					BMA250_EN_SUSPEND, 0);
+				data1  = BMA250_SET_BITSLICE(data1,
+					BMA250_EN_D_SUSPEND, 1);
 				break;
 			default:
 				break;
@@ -771,8 +810,12 @@ static void bma250_set_enable(struct device *dev, int enable)
 		
 	} else {
 		if (pre_enable ==1) {
-			bma250_set_mode(bma250->bma250_client, 
-							BMA250_MODE_SUSPEND);
+			if(deep_suspend)
+				bma250_set_mode(bma250->bma250_client, 
+								BMA250_MODE_D_SUSPEND);
+			else
+				bma250_set_mode(bma250->bma250_client, 
+								BMA250_MODE_SUSPEND);
 			cancel_delayed_work_sync(&bma250->work);
 			atomic_set(&bma250->enable, 0);
 		} 
@@ -905,12 +948,16 @@ static int bma250_probe(struct i2c_client *client,
 		printk("bma: sysfs_create_group err\n");
 		goto error_sysfs;
 	}
+
+#if 0
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	data->early_suspend.level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN + 1;
 	data->early_suspend.suspend = bma250_early_suspend;
 	data->early_suspend.resume = bma250_late_resume;
 	register_early_suspend(&data->early_suspend);
 #endif
+#endif
+
 	
 	dprintk(DEBUG_INIT, "bma250: probe end\n");
 
@@ -925,6 +972,8 @@ exit:
 	return err;
 }
 
+
+#if 0
 #ifdef CONFIG_HAS_EARLYSUSPEND
 static void bma250_early_suspend(struct early_suspend *h)
 {
@@ -1052,15 +1101,19 @@ static int bma250_suspend(struct i2c_client *client, pm_message_t mesg)
 }
 #endif
 #endif /* CONFIG_HAS_EARLYSUSPEND */
+#endif
 
 static int bma250_remove(struct i2c_client *client)
 {
 	struct bma250_data *data = i2c_get_clientdata(client);
 
 	bma250_set_enable(&client->dev, 0);
+#if 0
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	unregister_early_suspend(&data->early_suspend);
 #endif
+#endif
+
 	sysfs_remove_group(&data->input->dev.kobj, &bma250_attribute_group);
 	bma250_input_delete(data);
 	i2c_set_clientdata(client, NULL);
@@ -1085,6 +1138,8 @@ static struct i2c_driver bma250_driver = {
 	.id_table	= bma250_id,
 	.probe		= bma250_probe,
 	.remove		= bma250_remove,
+
+#if 0
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #else
 #ifdef CONFIG_PM
@@ -1092,6 +1147,8 @@ static struct i2c_driver bma250_driver = {
 	.resume 	= bma250_resume,
 #endif
 #endif
+#endif
+
 	.detect		= gsensor_detect,
 	.address_list	= normal_i2c,
 };
