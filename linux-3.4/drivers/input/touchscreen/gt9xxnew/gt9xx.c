@@ -1763,7 +1763,7 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
             sensor_id = 2;
             dprintk(DEBUG_INIT,"gt9xx:sensor_id = %d\n",sensor_id);
 			
-		} else if (!strcmp(config_info.name,"gt9110_g200")){
+		} else if (!strcmp(config_info.name,"gt9271_v975s")){
             sensor_id = 3;
             dprintk(DEBUG_INIT,"gt9xx:sensor_id = %d\n",sensor_id);
 			

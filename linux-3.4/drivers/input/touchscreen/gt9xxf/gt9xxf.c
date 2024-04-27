@@ -1409,20 +1409,12 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
 #if GTP_COMPATIBLE_MODE
 		msleep(50);
 #endif
-    int retry = 0;
-    while (retry++ < 6) {
-      ret = gtp_i2c_read_dbl_check(ts->client, GTP_REG_SENSOR_ID, &sensor_id, 1);
-      if (SUCCESS == ref && sensor_id < 0x06) break;
-		  msleep(50);
-      GTP_INFO("Get sensor_id try %d", retry);
-    }
-    if (retry == 5) sensor_id = 0xFF;
+		ret = gtp_i2c_read_dbl_check(ts->client, GTP_REG_SENSOR_ID, &sensor_id, 1);
 		if (SUCCESS == ret)
 		{
 			if (sensor_id >= 0x06)
 			{
-				GTP_ERROR("Invalid sensor_id(0x%02X), force to 3", sensor_id);
-        /*
+				GTP_ERROR("Invalid sensor_id(0x%02X), No Config Sent!", sensor_id);
 				ts->pnl_init_error = 1;
 #if GTP_COMPATIBLE_MODE
 				if (CHIP_TYPE_GT9F == ts->chip_type)
@@ -1435,8 +1427,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
 					gtp_get_info(ts);
 				}
 				return 0;
-        */
-        sensor_id = 3;
 			}
 		}
 		else

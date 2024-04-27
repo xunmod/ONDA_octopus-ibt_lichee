@@ -49,8 +49,8 @@
 #define GTP_HAVE_TOUCH_KEY    1
 #define GTP_ICS_SLOT_REPORT   0
 
-#define GTP_AUTO_UPDATE       1    // auto update fw by .bin file as default
-#define GTP_HEADER_FW_UPDATE  1    // auto update fw by gtp_default_FW in gt9xx_firmware.h, function together with GTP_AUTO_UPDATE
+#define GTP_AUTO_UPDATE       0    // auto update fw by .bin file as default
+#define GTP_HEADER_FW_UPDATE  0    // auto update fw by gtp_default_FW in gt9xx_firmware.h, function together with GTP_AUTO_UPDATE
 #define GTP_AUTO_UPDATE_CFG   0    // auto update config by .cfg file, function together with GTP_AUTO_UPDATE
 
 #define GTP_COMPATIBLE_MODE   1    // compatible with GT9XXF
@@ -327,7 +327,7 @@ extern void gtp_set_io_int(void);
 
 // STEP_4(optional): If keys are available and reported as keys, config your key info here                             
 #if GTP_HAVE_TOUCH_KEY
-    #define GTP_KEY_TAB  {KEY_HOME}
+    #define GTP_KEY_TAB  {KEY_MENU, KEY_HOME, KEY_BACK}
 #endif
 
 //***************************PART3:OTHER define*********************************
