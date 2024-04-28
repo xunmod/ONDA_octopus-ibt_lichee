@@ -42,15 +42,15 @@
 
 
 //***************************PART1:ON/OFF define*******************************
-#define GTP_CUSTOM_CFG        0
+#define GTP_CUSTOM_CFG        1
 #define GTP_CHANGE_X2Y        0
 #define GTP_DRIVER_SEND_CFG   1
 #define GTP_HAVE_TOUCH_KEY    1
 #define GTP_POWER_CTRL_SLEEP  1
 #define GTP_ICS_SLOT_REPORT   0 
 
-#define GTP_AUTO_UPDATE       0    // auto update fw by .bin file as default
-#define GTP_HEADER_FW_UPDATE  0    // auto update fw by gtp_default_FW in gt9xx_firmware.h, function together with GTP_AUTO_UPDATE
+#define GTP_AUTO_UPDATE       1    // auto update fw by .bin file as default
+#define GTP_HEADER_FW_UPDATE  1    // auto update fw by gtp_default_FW in gt9xx_firmware.h, function together with GTP_AUTO_UPDATE
 #define GTP_AUTO_UPDATE_CFG   0    // auto update config by .cfg file, function together with GTP_AUTO_UPDATE
 
 #define GTP_COMPATIBLE_MODE   1    // compatible with GT9XXF
@@ -62,10 +62,10 @@
 #define GTP_SLIDE_WAKEUP      0
 #define GTP_DBL_CLK_WAKEUP    0    // double-click wakeup, function together with GTP_SLIDE_WAKEUP
 
-#define GTP_DEBUG_ON          1
+#define GTP_DEBUG_ON          0
 #define GTP_DEBUG_ARRAY_ON    0
 #define GTP_DEBUG_FUNC_ON     0
-#define GTP_DEBUG_INFO_ON     1
+#define GTP_DEBUG_INFO_ON     0
 
 #define GT910_FIRMWARE_CONFIG
 
@@ -191,19 +191,19 @@ extern void gtp_io_init(int ms);
 
 // STEP_3(optional): Specify your special config info if needed
 #if GTP_CUSTOM_CFG
-  #define GTP_MAX_HEIGHT   480
-  #define GTP_MAX_WIDTH    800
+  #define GTP_MAX_HEIGHT   720
+  #define GTP_MAX_WIDTH    1280
   #define GTP_INT_TRIGGER  1            // 0: Rising 1: Falling
 #else
   #define GTP_MAX_HEIGHT   4096
   #define GTP_MAX_WIDTH    4096
   #define GTP_INT_TRIGGER  1
 #endif
-#define GTP_MAX_TOUCH         5
+#define GTP_MAX_TOUCH         10
 
 // STEP_4(optional): If keys are available and reported as keys, config your key info here                             
 #if GTP_HAVE_TOUCH_KEY
-    #define GTP_KEY_TAB  {KEY_MENU, KEY_HOME, KEY_BACK}
+    #define GTP_KEY_TAB  {KEY_HOME}
 #endif
 
 //***************************PART3:OTHER define*********************************
