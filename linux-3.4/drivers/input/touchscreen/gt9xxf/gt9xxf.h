@@ -53,10 +53,10 @@
 #define GTP_HEADER_FW_UPDATE  1    // auto update fw by gtp_default_FW in gt9xx_firmware.h, function together with GTP_AUTO_UPDATE
 #define GTP_AUTO_UPDATE_CFG   0    // auto update config by .cfg file, function together with GTP_AUTO_UPDATE
 
-#define GTP_COMPATIBLE_MODE   1    // compatible with GT9XXF
+#define GTP_COMPATIBLE_MODE   0    // compatible with GT9XXF
 
 #define GTP_CREATE_WR_NODE    1
-#define GTP_ESD_PROTECT       0    // esd protection with a cycle of 2 seconds
+#define GTP_ESD_PROTECT       1    // esd protection with a cycle of 2 seconds
 #define GTP_WITH_PEN          0
 
 #define GTP_SLIDE_WAKEUP      0

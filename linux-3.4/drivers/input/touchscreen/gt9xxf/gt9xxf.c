@@ -2297,6 +2297,7 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 	i2c_set_clientdata(client, ts);
 
 	ts->gtp_rawdiff_mode = 0;
+  gtp_reset_guitar(client, 20);
 
 	ret = gtp_i2c_test(client);
 	if (ret < 0)
@@ -2870,6 +2871,7 @@ static int __devinit goodix_ts_init(void)
         }
         input_set_power_enable(&(config_info.input_type), 1);
         msleep(10);
+        ctp_wakeup(0,10);
         sunxi_gpio_to_name(CTP_IRQ_NUMBER,irq_pin_name);
 		sunxi_gpio_to_name(CTP_RST_NUMBER,rst_pin_name);
         gtp_io_init(20);		
